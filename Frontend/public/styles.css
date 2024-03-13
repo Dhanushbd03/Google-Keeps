@@ -1,0 +1,182 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-family: "Montserrat", sans-serif;
+  width: 100%;
+}
+body {
+  background: #ffffff;
+  width: 100%;
+}
+#root {
+  width: 100%;
+}
+#main {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 32px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  justify-self: flex-start;
+}
+header img {
+  width: 50px;
+  height: 50px;
+  margin-left: 20px;
+}
+header i {
+  font-size: 24px;
+}
+header h1 {
+  color: rgb(97, 95, 95);
+  font-family: "McLaren", cursive;
+  font-weight: 200;
+}
+#notes {
+  width: 100%;
+  padding-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+footer {
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
+
+footer p {
+  left: 50%;
+  color: #dbd3d3;
+  max-width: 50%;
+  position: absolute;
+}
+.note {
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  padding: 10px;
+  margin: 16px;
+  width: 27%;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+.note h1 {
+  font-size: 1.1em;
+  margin-bottom: 6px;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+.note p {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+.note button {
+  border: none;
+  font-size: 0.7rem;
+  text-align: end;
+  color: #f5ba13;
+  background: rgba(0, 0, 0, 0);
+  width: 10%;
+  align-self: flex-end;
+}
+form.create-note {
+  position: relative;
+  width: 50%;
+  margin: 30px auto 20px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+}
+form.create-note input,
+form.create-note textarea {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+}
+form.create-note button {
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  background: #f5ba13;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+}
+.search {
+  width: 50%;
+  height: 100%;
+  margin-left: 50px;
+}
+.search .input {
+  width: 100%;
+  height: 100%;
+}
+.profile {
+  width: 10%;
+  height: 50px;
+  position: absolute;
+  right: 20px;
+}.css-1ihob1g-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: red;
+}
+.login {
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  font-weight: 900;
+}
+.login:active{
+  background-color: #FFBA00;
+}
+
+@media only screen and (max-width: 500px) {
+  form.create-note {
+    width: 90%;
+  }
+  header h1 {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 300;
+  }
+  .search {
+    width: 50%;
+    height: 100%;
+    margin-left: 0;
+  }
+  .search .input {
+    width: 50%;
+    height: 100%;
+  }
+}
