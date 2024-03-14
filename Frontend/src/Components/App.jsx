@@ -3,11 +3,13 @@ import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import Note from "./Note.jsx";
 import Form from "./Form.jsx";
-
+import Signup from "./Signup.jsx";
+import Axios from "axios";
 
 function App() {
   const storedNotes = JSON.parse(localStorage.getItem("notes")) || []; // Ensure initial state is not null
   const [notes, setNotes] = useState(storedNotes);
+  const [isloggedin, setisloggedin] = useState(false);
 
   function addNote(note) {
     setNotes((prevNotes) => {
@@ -22,34 +24,44 @@ function App() {
       });
     });
   }
-  
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
-  return (
-    <div id="main">
-      <Header />
-      
-      <Form onadd={addNote} />
-      <div id="notes">
-        {notes && notes.map((noteItem, index) => {
-          // Assuming you want to skip rendering notes without title and content
-          return (noteItem.title || noteItem.content) ? (
-            <Note
-              key={index}
-              id={index}
-              title={noteItem.title}
-              content={noteItem.content}
-              onDelete={deleteNote}
-            />
-          ) : null;
-        })}
+  if (isloggedin) {
+    return (
+      <div id="main">
+        <Header />
+
+        <Form onadd={addNote} />
+        <div id="notes">
+          {notes &&
+            notes.map((noteItem, index) => {
+              // Assuming you want to skip rendering notes without title and content
+              return noteItem.title || noteItem.content ? (
+                <Note
+                  key={index}
+                  id={index}
+                  title={noteItem.title}
+                  content={noteItem.content}
+                  onDelete={deleteNote}
+                />
+              ) : null;
+            })}
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div id="main">
+        <Header isloggedin={isloggedin} />
+        <Signup />
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;
