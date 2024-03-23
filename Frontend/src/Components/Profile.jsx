@@ -4,30 +4,36 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
-    ochre: {
-      main: "#FFBA00",
-      light: "#FFBA00",
-      dark: "#FFBA00",
-      contrastText: "#242105",
+    color: {
+      main: "${props.color}",
+      light: "${props.color}",
+      dark: "${props.color}",
+      contrastText: "${props.color}",
     },
   },
 });
 
-function Profile() {
+function Profile(props) {
+  // Function to handle logout
+  const handleLogout = () => {
+    // Call the function passed from App.js to set isloggedin to false
+    props.setIsloggedin(false);
+  };
+
   return (
     <div className="profile">
       <ThemeProvider theme={theme}>
         <Button
           variant="contained"
-          color="ochre"
+          color="color"
           className="login"
           sx={{
-            fontSize: "20px",
             fontWeight: 600,
-            color: "#615F5F",
+            color: "#fff",
           }}
+          onClick={handleLogout} // Call handleLogout when the button is clicked
         >
-          Login
+          Logout
         </Button>
       </ThemeProvider>
     </div>

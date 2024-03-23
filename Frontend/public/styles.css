@@ -8,7 +8,6 @@ html {
   width: 100%;
 }
 body {
-  background: #ffffff;
   width: 100%;
 }
 #root {
@@ -25,7 +24,7 @@ body {
 header {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+
   padding: 10px 32px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   position: sticky;
@@ -42,7 +41,7 @@ header i {
   font-size: 24px;
 }
 header h1 {
-  color: rgb(97, 95, 95);
+  color: rgb(255, 255, 255);
   font-family: "McLaren", cursive;
   font-weight: 200;
 }
@@ -96,10 +95,11 @@ footer p {
   border: none;
   font-size: 0.7rem;
   text-align: end;
-  color: #f5ba13;
+
   background: rgba(0, 0, 0, 0);
   width: 10%;
   align-self: flex-end;
+  cursor: pointer;
 }
 form.create-note {
   position: relative;
@@ -198,11 +198,14 @@ form.create-note button {
 .login-form button {
   font-size: 20px;
   color: rgb(255, 255, 255);
-  background-color: rgb(255, 200, 47);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   border-radius: 25px;
   border: 2px solid rgb(255, 255, 255);
   height: 40px;
   cursor: pointer;
+}
+.login-form button:active {
+  background-color: rgb(204, 204, 204, 0.5);
 }
 
 @media only screen and (max-width: 500px) {

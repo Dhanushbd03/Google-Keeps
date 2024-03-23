@@ -60,6 +60,7 @@ function Search() {
   return (
     <div className="search">
       <TextField
+        sx={{ input: { color: "#fff" } }}
         className="input"
         variant="outlined"
         placeholder="Search..."
@@ -69,7 +70,7 @@ function Search() {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon />
+              <SearchIcon sx={{ color: "white" }} />
             </InputAdornment>
           ),
         }}

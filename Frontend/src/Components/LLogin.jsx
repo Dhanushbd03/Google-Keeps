@@ -1,21 +1,40 @@
 import React, { useState } from "react";
+import Axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
-function Login() {
+function Login(props) {
   const [emaillog, setemail] = useState("");
   const [passwordlog, setpassword] = useState("");
-  const login = async () => {
+  const [message, setMessage] = useState("");
+  const color = "red";
+
+  const noacc = () => {
+    props.setreg(false);
+  };
+  const login = async (e) => {
+    e.preventDefault();
     try {
       const response = await Axios.post("http://localhost:3000/login", {
         email: emaillog,
         password: passwordlog,
       });
+      console.log(response.data);
+      if (response.data.success) {
+        props.isloggedin(true);
+      } else {
+        setMessage(response.data.error);
+        setColor("red");
+      }
     } catch (err) {
-      console.log(err);
+      setMessage(err.response.data.error);
     }
   };
+  setTimeout(() => {
+    setMessage("");
+  }, 3000);
 
   return (
-    <div className="login-form-box">
+    <div className="login-form-box" style={{ background: props.color }}>
       <h1>Login</h1>
       <form onSubmit={login} className="login-form">
         <label htmlFor="email">Email</label>
@@ -26,6 +45,7 @@ function Login() {
             setemail(e.target.value);
           }}
           name="email"
+          required
         />
         <label htmlFor="password">Password</label>
         <input
@@ -35,10 +55,12 @@ function Login() {
             setpassword(e.target.value);
           }}
           name="password"
+          required
         />
-        <button>Login</button>
+        <button style={{ background: props.color }}>Login</button>
       </form>
-      <button>Don't have a account ?,Register</button>
+      <p style={{ color: color }}>{message}</p>
+      <button onClick={noacc}>Don't have a account ?,Register</button>
     </div>
   );
 }

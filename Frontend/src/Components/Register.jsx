@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Axios from "axios";
-function Register() {
+import { Link } from "react-router-dom";
+
+function Register(props) {
   const [emailreg, setemailreg] = useState("");
   const [passwordreg, setpasswordreg] = useState("");
   const [fullname, setfullname] = useState("");
@@ -18,25 +20,26 @@ function Register() {
       if (response.data.success) {
         setMessage("Registration successful");
         setColor("green");
-        setemailreg("");
-        setpasswordreg("");
-        setfullname("");
+
+        props.isloggedin(true);
       } else {
         setMessage(response.data.error);
         setColor("red");
-        console.log(response.data.error);
+        setemailreg("");
+        setpasswordreg("");
+        setfullname("");
       }
     } catch (err) {
-      setMessage(err.response.data.error); // Use err.response.data.error instead of response.data.error
-      setColor("red");
       console.log(err);
+      // Use err.response.data.error instead of response.data.error
+      setColor("red");
     }
     setTimeout(() => {
       setMessage("");
     }, 3000);
   };
   return (
-    <div className="login-form-box">
+    <div className="login-form-box" style={{ background: props.color }}>
       <h1>Register</h1>
       <form onSubmit={register} className="login-form">
         <label htmlFor="name">Name</label>
@@ -69,10 +72,19 @@ function Register() {
           name="password"
           required
         />
-        <button type="submit">Register</button>
+        <button type="submit" style={{ background: props.color }}>
+          Register
+        </button>
         <p style={{ color: color }}>{message}</p>
       </form>
-      <button>Already have an account? login</button>
+
+      <button
+        onClick={() => {
+          props.setreg(true);
+        }}
+      >
+        Already have an account? login
+      </button>
     </div>
   );
 }
