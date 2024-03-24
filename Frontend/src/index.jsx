@@ -8,8 +8,8 @@ var root = createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
     <Auth0Provider
-      domain="dev-3bdh3i7gdy8rgqpy.us.auth0.com"
-      clientId="jxo9zaTCiMazl3PQDzCLJtBlnN09SliT"
+      domain={import.meta.env.VITE_DOMAIN}
+      clientId={import.meta.env.VITE_CLIENT_ID}
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}

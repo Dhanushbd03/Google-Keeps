@@ -35,7 +35,7 @@ function App() {
       {
         headers: {
           Authorization:
-            "wADIdebqijYiFz80CvEu7byeUxQm6AjA99x1NGwbhxuksvfohGavsaug",
+          import.meta.env.VITE_PEXEL_API,
         },
       }
     );
