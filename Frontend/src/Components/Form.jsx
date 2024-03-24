@@ -13,7 +13,7 @@ function Form(props) {
       if (note.title=="" || note.content=="" || props.user_id==undefined) {
         console.log("NOT SAVED TO DB");
       }else{
-        const response = await Axios.post("http://localhost:3000/addnotes", {
+        const response = await Axios.post("https://google-keeps.onrender.com/addnotes", {
           title: note.title,
           content: note.content,
           user_id: props.user_id,
