@@ -4,16 +4,30 @@ import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import Note from "./Note.jsx";
 import Form from "./Form.jsx";
-import Signup from "./Signup.jsx";
 import Axios from "axios";
 
 function App() {
-  const storedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-  const storedState = JSON.parse(localStorage.getItem("isloggedin"));
-  const [notes, setNotes] = useState(storedNotes);
-  const [isloggedin, setIsloggedin] = useState(storedState);
+  const [notes, setNotes] = useState("");
   const [images, setImages] = useState("landscape");
   const [color, setColor] = useState("black");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      getNotes();
+    }
+  }, [user, notes]);
+
+  const getNotes = async () => {
+    const response = await Axios.post("http://localhost:3000/getNotes", {
+      user: user,
+    });
+    setNotes(response.data.notes);
+  };
+
+  const handleuser = (data) => {
+    setUser(data);
+  };
 
   const pexel = async () => {
     const response = await Axios.get(
@@ -58,48 +72,33 @@ function App() {
   function deleteNote(id) {
     setNotes((prevNotes) => {
       return prevNotes.filter((noteItem, index) => {
-        return index !== id;
+        return noteItem.id !== id;
       });
     });
   }
 
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
-
-  useEffect(() => {
-    localStorage.setItem("isloggedin", JSON.stringify(isloggedin));
-  }, [isloggedin]);
-
   return (
     <div id="main" style={{ backgroundImage: `url(${images})` }}>
-      <Header
-        isloggedin={isloggedin}
-        setIsloggedin={setIsloggedin}
-        color={color}
-      />
-      {isloggedin ? (
-        <>
-          <Form onadd={addNote} color={color} />
-          <div id="notes">
-            {notes &&
-              notes.map((noteItem, index) => {
-                return noteItem.title || noteItem.content ? (
-                  <Note
-                    color={color}
-                    key={index}
-                    id={index}
-                    title={noteItem.title}
-                    content={noteItem.content}
-                    onDelete={deleteNote}
-                  />
-                ) : null;
-              })}
-          </div>
-        </>
-      ) : (
-        <Signup setIsloggedin={setIsloggedin} color={color} />
-      )}
+      <Header color={color} handleuser={handleuser} />
+      <>
+        <Form onadd={addNote} color={color} user_id={user} />
+        <div id="notes">
+          {notes &&
+            notes.map((noteItem, index) => {
+              return noteItem.title || noteItem.content ? (
+                <Note
+                  color={color}
+                  key={index}
+                  id={noteItem.id}
+                  title={noteItem.title}
+                  content={noteItem.content}
+                  onDelete={deleteNote}
+                  user_id={user}
+                />
+              ) : null;
+            })}
+        </div>
+      </>
       <Footer />
     </div>
   );

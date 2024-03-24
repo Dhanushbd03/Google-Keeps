@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import env from "dotenv";
 import pg from "pg";
 import cors from "cors";
-import bcrypt from "bcrypt";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -22,93 +21,73 @@ const db = new pg.Client({
 });
 db.connect();
 
-// Regular expression for password pattern (at least 8 characters long, containing at least one letter and one digit)
-
-app.post("/register", async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  const fullname = req.body.fullname;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression for email pattern
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+app.post("/addnotes", async (req, res) => {
   try {
-    // Check if email and password match the required patterns
-    if (!emailRegex.test(email)) {
-      return res.json({ error: "Email does not match the required pattern" });
-    }
-    if (!passwordRegex.test(password)) {
-      return res.json({
-        error:
-          "Password does not match the required pattern (at least 8 characters long, containing at least one letter and one digit)",
-      });
-    }
-    bcrypt.hash(password, saltround, async (err, hash) => {
-      if (err) {
-        console.log("unable to hash : " + err);
-      } else {
-        const search = await db.query(
-          "Select email from Users where email = $1",
-          [email]
-        );
+    const title = req.body.title;
+    const content = req.body.content;
+    const user_id = req.body.user_id;
 
-        if (search.rows.length > 0) {
-          res.json({ error: " Email already registered please login" });
-        } else {
-          await db.query(
-            "INSERT INTO Users(email, password, name) VALUES ($1, $2, $3)",
-            [email, hash, fullname]
-          );
-          res.json({ success: true });
-        }
-      }
-    });
+    await db.query(
+      "INSERT INTO notes(title, content, user_id) VALUES($1, $2, $3)",
+      [title, content, user_id]
+    );
+
+    res.status(200).json({ message: "Note added successfully" });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/getNotes", async (req, res) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const findUser = await db.query("Select * from Users where email = $1", [
-      email,
+    const user = req.body.user;
+    const result = await db.query("SELECT * FROM notes WHERE user_id=$1", [
+      user,
     ]);
 
-    if (findUser.rows.length <= 0) {
-      res.status(400).json({ error: "User not found" });
+    if (result.rowCount > 0) {
+      res.status(200).json({ notes: result.rows });
     } else {
-      const user = findUser.rows[0];
-      const storedPassword = user.password;
-      const user_id = user.userid;
-console.log(storedPassword);
-      bcrypt.compare(password, storedPassword, (err, rev_hash) => {
-        if (err) {
-          console.log("error comparing:" + err);
-        } else {
-          if (rev_hash) {
-            res.status(200).json({ success: true, userid: user_id });
-          } else {
-            res.status(400).json({ error: "Incorrect password" });
-          }
-        }
-      });
+      res.status(404).json({ message: "No notes found for the user" });
     }
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-app.post("/notes", async (req, res) => {
-  const title = req.body.title;
-  const content = req.body.content;
-  const userid = req.body.userid;
-  console.log(userid);
+app.post("/deleteNotes", async (req, res) => {
+  try {
+    const notes_id = req.body.notes_id;
+    const result = await db.query("DELETE FROM notes WHERE id = $1", [
+      notes_id,
+    ]);
 
-  await db.query(
-    "insert into notes(title,content,user_id) values($1, $2, $3)",
-    [title, content, userid]
-  );
+    // Check if the note was deleted successfully
+    if (result.rowCount > 0) {
+      res.json({ message: "Note deleted successfully" });
+    } else {
+      res.json({ message: "Note not found" });
+    }
+  } catch (err) {
+    res.json({ message: "Internal Server Error" });
+  }
+});
+
+app.put("/updateNote", async (req, res) => {
+  try {
+    const { id, title, content } = req.body;
+
+    await db.query("UPDATE notes SET title = $1, content = $2 WHERE id = $3", [
+      title,
+      content,
+      id,
+    ]);
+
+    res.status(200).json({ message: "Note updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 app.listen(port, () => {

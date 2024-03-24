@@ -1,5 +1,5 @@
 import React, { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, onRedirectCallback } from "react-dom/client";
 import App from "./Components/App.jsx";
 import "/public/styles.css";
 import { Auth0Provider } from "@auth0/auth0-react";
@@ -13,8 +13,12 @@ root.render(
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}
+      onRedirectCallback={onRedirectCallback}
+      useRefreshTokens
+      cacheLocation="localstorage"
     >
       <App />
     </Auth0Provider>
+    ,
   </StrictMode>
 );

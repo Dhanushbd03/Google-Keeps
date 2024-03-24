@@ -1,20 +1,18 @@
 // Header.jsx
 import React from "react";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import Search from "./Search";
-import Profile from "./Profile";
+import Login from "./Login";
 
 function Header(props) {
-  const { isloggedin, setIsloggedin } = props; // Destructure isloggedin and setIsloggedin
-
   return (
     <header style={{ backgroundColor: props.color }}>
-      <img src="/images/keeps.png" alt="" />
-      <h1>Keeper</h1>
-      {isloggedin ? <Search /> : null}
-      {isloggedin ? (
-        <Profile setIsloggedin={setIsloggedin} color={props.color} />
-      ) : null}
+      <div style={{ display: "flex" }}>
+        <img src="/images/keeps.png" alt="" />
+        <h1>Keeper</h1>
+      </div>
+      <Search />
+      <Login color={props.color} handleuser={props.handleuser} />
     </header>
   );
 }
