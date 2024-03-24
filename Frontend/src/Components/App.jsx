@@ -19,7 +19,7 @@ function App() {
   }, [user, notes]);
 
   const getNotes = async () => {
-    const response = await Axios.post("http://localhost:3000/getNotes", {
+    const response = await Axios.post("https://google-keeps.onrender.com/getNotes", {
       user: user,
     });
     setNotes(response.data.notes);
