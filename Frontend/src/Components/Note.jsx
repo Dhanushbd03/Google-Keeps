@@ -12,7 +12,7 @@ function Note(props) {
 
   const deleteNote = async () => {
     try {
-      const response = await Axios.post("http://localhost:3000/deleteNotes", {
+      const response = await Axios.post("https://google-keeps.onrender.com/deleteNotes", {
         notes_id: props.id,
       });
 
