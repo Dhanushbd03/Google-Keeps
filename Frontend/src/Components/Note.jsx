@@ -24,7 +24,7 @@ function Note(props) {
   };
 
   const updateNote = async () => {
-    const response = await Axios.put("http://localhost:3000/updateNote", {
+    const response = await Axios.put("https://google-keeps.onrender.com/updateNote", {
       title: editedTitle,
       content: editedContent,
       id: props.id,
